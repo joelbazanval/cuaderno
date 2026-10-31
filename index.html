@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cuaderno</title>
+<link rel="stylesheet" href="styles.css"></head><body>
+<header>
+<button id="hB" title="Atrás" aria-label="Atrás">←</button><button id="hFw" title="Adelante" aria-label="Adelante">→</button><button id="hU" title="Deshacer" aria-label="Deshacer">↶</button><button id="hRd" title="Rehacer" aria-label="Rehacer">↷</button><button id="hD">⌂ Dashboard</button><button id="hN" class="p">＋ Nota</button><button id="hR">Registro</button><button id="hA">Agenda</button><button id="hH">Hashtags</button><button id="hF">Finanzas</button>
+<span class="sp"></span><button id="hS" title="Buscar (Ctrl+K)" aria-label="Buscar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button><button id="hX">Exportar / Importar</button>
+</header>
+<main id="app"></main>
+<div id="menu"></div>
+<div id="modal"><div class="box"><b>Exportar / Importar</b>
+<span class="mu">Copia el texto o guarda el archivo. Para importar, elige un archivo o pega el contenido y pulsa Importar. Se combina con tus notas actuales.</span>
+<textarea id="mt" spellcheck="false"></textarea>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<button id="mC" class="p">Copiar</button><button id="mS">Compartir / Descargar</button>
+<label class="btn">Archivo…<input id="mF" type="file" accept=".json,.txt" hidden></label>
+<button id="mI">Importar</button><span class="sp"></span><button id="mX">Cerrar</button></div>
+<span id="mm" class="mu"></span></div></div>
+<script src="app.js"></script></body></html>
