@@ -19,26 +19,14 @@ Abre `index.html` en el navegador, o sirve la carpeta: `python3 -m http.server 8
 Hoy se guardan en `localStorage` del navegador (por dispositivo y por dirección). Usa **Exportar / Importar** como respaldo y para pasar notas entre dispositivos.
 Importante: al cambiar de dirección (por ejemplo de claude.ai a github.io) las notas no se trasladan solas; exporta en la anterior e importa en la nueva.
 
-## Sincronizar con Supabase (opcional, aún no incluido)
-GitHub Pages solo sirve archivos estáticos; Supabase aportaría login y base de datos para sincronizar entre dispositivos. Esquema sugerido:
+## Sincronizar con Supabase
+1. En https://supabase.com crea un proyecto.
+2. SQL Editor → pega el contenido de `supabase.sql` → Run (crea las tablas `pages` y `settings` con seguridad por usuario).
+3. Project Settings → API: copia **Project URL** y la clave **anon public** y pégalas en `config.js`.
+4. Authentication → URL Configuration: pon como *Site URL* `https://joelbazanval.github.io/cuaderno/`.
+   (Opcional, para entrar sin confirmar correo: Authentication → Providers → Email → desactiva *Confirm email*.)
+5. Sube los cambios a GitHub. Abre la app, pulsa ☁, crea tu cuenta y entra.
 
-```sql
-create table pages (
-  user_id uuid references auth.users not null default auth.uid(),
-  name text not null,
-  body text not null default '',
-  untitled boolean default false,
-  touched bigint default 0,
-  updated_at timestamptz default now(),
-  primary key (user_id, name)
-);
-create table settings (
-  user_id uuid primary key references auth.users default auth.uid(),
-  enums jsonb default '{}'
-);
-alter table pages enable row level security;
-alter table settings enable row level security;
-create policy "own pages" on pages for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
-create policy "own settings" on settings for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
-```
-Con eso, la app usaría solo la clave pública (anon) de Supabase en el navegador; la seguridad la dan las políticas RLS. Nunca pongas la clave `service_role` en el código.
+Cómo sincroniza: al entrar, al guardar (unos segundos después), al volver a la pestaña y cada minuto. Si una nota cambia en dos dispositivos a la vez, se conserva tu versión y la otra queda como `nota (conflicto)`. Los borrados también se propagan. Si `config.js` está vacío, la app funciona solo en local.
+
+Seguridad: usa únicamente la clave anon; las políticas RLS impiden leer o escribir notas de otros usuarios. Nunca pongas la clave `service_role` en el código.

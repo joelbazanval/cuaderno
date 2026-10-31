@@ -7,7 +7,7 @@ try{if(!localStorage.getItem(K+'m')){const np={};for(const k in S.pages){const p
 const snap=()=>JSON.stringify(S.pages,(k,v)=>k==='r'?undefined:v);
 let UH=[snap()],UI=0;
 const persist=()=>{try{localStorage.setItem(K,JSON.stringify(S.pages))}catch(e){}};
-const save=()=>{sync();persist();const j=snap();if(j!==UH[UI]){UH=UH.slice(0,UI+1);UH.push(j);if(UH.length>60)UH.shift();UI=UH.length-1}};
+const save=()=>{sync();persist();window.cloudSoon&&window.cloudSoon();const j=snap();if(j!==UH[UI]){UH=UH.slice(0,UI+1);UH.push(j);if(UH.length>60)UH.shift();UI=UH.length-1}};
 const undo=d=>{clearTimeout(tmr);save();const k=UI+d;if(k<0||k>=UH.length)return;UI=k;const old=S.pages;S.pages=JSON.parse(UH[k]);for(const p in S.pages)if(old[p]&&old[p].r)S.pages[p].r=old[p].r;persist();if(!S.pages[S.cur]&&![D,R,AG,H,SR,FZ].includes(S.cur)&&!S.cur.startsWith('REG:'))S.cur=D;draw()};
 const pd=n=>(n.match(/^\d\d\/\d\d\/\d\d/)||[''])[0];
 const PD=s=>new Date(2000+ +s.slice(0,2),+s.slice(3,5)-1,+s.slice(6,8));
